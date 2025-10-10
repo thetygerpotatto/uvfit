@@ -7,7 +7,6 @@ export default function TabLayout() {
       <Tabs.Screen name="Sleep" />
       <Tabs.Screen name="food" />
       <Tabs.Screen name="Stats" />
-
     </Tabs>
   );
 }

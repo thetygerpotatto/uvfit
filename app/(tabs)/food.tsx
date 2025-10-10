@@ -1,10 +1,9 @@
-import { Link } from 'expo-router';
 import { View, Text, StyleSheet } from 'react-native';
 
-export default function HomeScreen() {
+export default function DetailsScreen() {
   return (
     <View style={styles.container}>
-      <Text>Lenis CHUPEMELAAAAA</Text>
+      <Text style={styles.text}>food details screen</Text>
     </View>
   );
 }
@@ -14,5 +13,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#0F0A0A',
+  },
+  text: {
+    color: '#F5EFED',
   },
 });

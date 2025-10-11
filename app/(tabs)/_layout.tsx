@@ -50,7 +50,7 @@ export default function TabLayout() {
       />
       <Tabs.Screen
         name="Sleep"
-        options={{
+        options = { ({route}) => ({
           tabBarIcon: ({ color }) => (
             <Image
               source={require('../../assets/images/SleepIcon.png')}
@@ -61,16 +61,16 @@ export default function TabLayout() {
             <TouchableOpacity onPress={() => { /* Lógica del botón aquí */ }} style={{ marginRight: 25 }}>
               <Image
                 source={require('../../assets/images/UserIcon.png')}
-                style={{ width: 25, height: 25, tintColor: PasionColor.BlancoPasion }}
+                style={{ width: 25, height: 25, tintColor: tabColor[route.name].strokeStyle}}
               />
             </TouchableOpacity>
           ),
-        }}
+        })}
 
       />
       <Tabs.Screen
         name="Food"
-        options={{
+        options= {({route}) => ({
           tabBarIcon: ({ color }) => (
             <Image
               source={require('../../assets/images/EatIcon.png')}
@@ -81,15 +81,15 @@ export default function TabLayout() {
             <TouchableOpacity onPress={() => { /* Lógica del botón aquí */ }} style={{ marginRight: 25 }}>
               <Image
                 source={require('../../assets/images/UserIcon.png')}
-                style={{ width: 25, height: 25, tintColor: PasionColor.BlancoPasion }}
+                style={{ width: 25, height: 25, tintColor: tabColor[route.name].strokeStyle }}
               />
             </TouchableOpacity>
             ),
-        }}
+        })}
       />
       <Tabs.Screen
         name="Stats"
-        options={{
+        options= {({route}) => ({
           tabBarIcon: ({ color }) => (
             <Image
               source={require('../../assets/images/DumbbellIcon.png')}
@@ -100,15 +100,15 @@ export default function TabLayout() {
             <TouchableOpacity onPress={() => { /* Lógica del botón aquí */ }} style={{ marginRight: 25 }}>
               <Image
                 source={require('../../assets/images/UserIcon.png')}
-                style={{ width: 25, height: 25, tintColor: PasionColor.BlancoPasion }}
+                style={{ width: 25, height: 25, tintColor: tabColor[route.name].strokeStyle }}
               />
             </TouchableOpacity>
           ),
-        }}
+        })}
       />
       <Tabs.Screen
         name="Settings"
-        options={{
+        options={ ({route}) => ({
           title: 'Settings',
           tabBarIcon: ({ color }) => (
             <Image
@@ -120,11 +120,11 @@ export default function TabLayout() {
             <TouchableOpacity onPress={() => { /* Lógica del botón aquí */ }} style={{ marginRight: 25 }}>
               <Image
                 source={require('../../assets/images/UserIcon.png')}
-                style={{ width: 25, height: 25, tintColor: PasionColor.BlancoPasion }}
+                style={{ width: 25, height: 25, tintColor: tabColor[route.name].strokeStyle }}
               />
             </TouchableOpacity>
           ),
-        }}
+        })}
       />
     </Tabs>
   );

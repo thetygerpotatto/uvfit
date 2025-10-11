@@ -4,7 +4,9 @@ import { View, Text, StyleSheet } from 'react-native';
 export default function DetailsScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>SLEEP DETAILS</Text>
+        <View style={styles.infoContainer}> 
+            <Text style={styles.text}>Sleep DETAILS</Text>
+        </View>
     </View>
   );
 }
@@ -12,9 +14,20 @@ export default function DetailsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: PasionColor.NegroPasion,
+  },
+  infoContainer: {
+    position: "absolute",
+    bottom: 130,
+    left: 20,
+    right: 20,
+    top: 20,
     justifyContent: 'center',
+    borderRadius: 20,
     alignItems: 'center',
     backgroundColor: PasionColor.AzulFondoPasion,
+    borderWidth: 1,
+    borderColor: PasionColor.GrisPasion,
   },
   text: {
     color: PasionColor.AzulPasion,

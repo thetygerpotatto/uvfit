@@ -24,7 +24,7 @@ export default function PersonalDataScreen() {
     }
 
     console.log('Personal Data:', { name, age, height, weight, gender, activityLevel });
-    router.replace('/(tabs)/Training');
+    router.push("/sleepForm");
   };
 
   return (

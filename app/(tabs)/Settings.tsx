@@ -1,3 +1,4 @@
+import { PasionColor } from '@/scripts/PasionColors';
 import { View, Text, StyleSheet } from 'react-native';
 
 export default function DetailsScreen() {
@@ -13,9 +14,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#0F0A0A',
+    backgroundColor: PasionColor.NegroPasion,
   },
   text: {
-    color: '#F5EFED',
+    color: PasionColor.BlancoPasion,
   },
 });

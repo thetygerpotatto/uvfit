@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { PasionColor } from '@/scripts/PasionColors';
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -35,8 +36,9 @@ export default function LoginScreen() {
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
 
+      <Text style={styles.registerText}>Don't have an account?</Text>
       <TouchableOpacity style={styles.registerButton} onPress={handlePressRegister}>
-        <Text style={styles.registerButtonText}>Don't have an account? Register</Text>
+        <Text style={styles.registerButtonText}>Register</Text>
       </TouchableOpacity>
     </View>
   );
@@ -48,37 +50,37 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#0F0A0A',
+    backgroundColor: PasionColor.NegroPasion,
   },
   title: {
     fontSize: 48,
     fontWeight: 'bold',
     marginBottom: 40,
-    color: '#F5EFED',
+    color: PasionColor.BlancoPasion,
   },
   input: {
     width: '100%',
     height: 50,
-    backgroundColor: '#1a1a1a',
+    backgroundColor: PasionColor.GrisOscuroPasion,
     borderRadius: 10,
     paddingHorizontal: 15,
     marginBottom: 15,
     fontSize: 16,
-    color: '#F5EFED',
+    color: PasionColor.BlancoPasion,
     borderWidth: 1,
-    borderColor: '#333',
+    borderColor: PasionColor.GrisPasion,
   },
   button: {
     width: '100%',
     height: 50,
-    backgroundColor: '#007BFF',
+    backgroundColor: PasionColor.AzulPasion,
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 10,
   },
   buttonText: {
-    color: '#fff',
+    color: PasionColor.BlancoPasion,
     fontSize: 18,
     fontWeight: 'bold',
   },
@@ -86,7 +88,12 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   registerButtonText: {
-    color: '#007BFF',
+    color: PasionColor.AzulPasion,
     fontSize: 16,
+  },
+  registerText: {
+    color: PasionColor.GrisClaroPasion,
+    fontSize: 16,
+    marginTop: 15,
   },
 });

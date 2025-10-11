@@ -1,31 +1,30 @@
 import { Tabs, useRouter } from 'expo-router';
 import { Image, StyleSheet, TouchableOpacity } from 'react-native';
+import {PasionColor} from "../../scripts/PasionColors"
 
 export default function TabLayout() {
   const router = useRouter();
 
   return (
     <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: '#F5EFED',
-        tabBarInactiveTintColor: '#424242',
+      screenOptions = {({route}) => ({
+        tabBarActiveTintColor: PasionColor.BlancoPasion,
+        tabBarInactiveTintColor: PasionColor.GrisPasion,
         tabBarShowLabel: false,
         tabBarStyle: {
           height: 90,
           paddingTop: 25,
-          backgroundColor: '#0F0A0A',
+          backgroundColor: tabColor[route.name].backgroundColor,
           borderTopWidth: 0,
-        },
-        sceneContainerStyle: {
-            backgroundColor: '#0F0A0A',
+          borderRadius: 20,
         },
         headerStyle: {
-          backgroundColor: '#0F0A0A',
+          backgroundColor: tabColor[route.name].backgroundColor,
         },
         headerTitleStyle: {
-          color: '#F5EFED',
+          color: tabColor[route.name].strokeStyle,
         },
-      }}
+      })}
     >
       <Tabs.Screen
         name="Training"
@@ -40,7 +39,7 @@ export default function TabLayout() {
             <TouchableOpacity onPress={() => { /* Lógica del botón aquí */ }} style={{ marginRight: 25 }}>
               <Image
                 source={require('../../assets/images/UserIcon.png')}
-                style={{ width: 25, height: 25, tintColor: '#F5EFED' }}
+                style={{ width: 25, height: 25, tintColor: PasionColor.BlancoPasion }}
               />
             </TouchableOpacity>
           ),
@@ -59,7 +58,7 @@ export default function TabLayout() {
             <TouchableOpacity onPress={() => { /* Lógica del botón aquí */ }} style={{ marginRight: 25 }}>
               <Image
                 source={require('../../assets/images/UserIcon.png')}
-                style={{ width: 25, height: 25, tintColor: '#F5EFED' }}
+                style={{ width: 25, height: 25, tintColor: PasionColor.BlancoPasion }}
               />
             </TouchableOpacity>
           ),
@@ -67,7 +66,7 @@ export default function TabLayout() {
 
       />
       <Tabs.Screen
-        name="food"
+        name="Food"
         options={{
           tabBarIcon: ({ color }) => (
             <Image
@@ -79,7 +78,7 @@ export default function TabLayout() {
             <TouchableOpacity onPress={() => { /* Lógica del botón aquí */ }} style={{ marginRight: 25 }}>
               <Image
                 source={require('../../assets/images/UserIcon.png')}
-                style={{ width: 25, height: 25, tintColor: '#F5EFED' }}
+                style={{ width: 25, height: 25, tintColor: PasionColor.BlancoPasion }}
               />
             </TouchableOpacity>
             ),
@@ -98,7 +97,7 @@ export default function TabLayout() {
             <TouchableOpacity onPress={() => { /* Lógica del botón aquí */ }} style={{ marginRight: 25 }}>
               <Image
                 source={require('../../assets/images/UserIcon.png')}
-                style={{ width: 25, height: 25, tintColor: '#F5EFED' }}
+                style={{ width: 25, height: 25, tintColor: PasionColor.BlancoPasion }}
               />
             </TouchableOpacity>
           ),
@@ -118,7 +117,7 @@ export default function TabLayout() {
             <TouchableOpacity onPress={() => { /* Lógica del botón aquí */ }} style={{ marginRight: 25 }}>
               <Image
                 source={require('../../assets/images/UserIcon.png')}
-                style={{ width: 25, height: 25, tintColor: '#F5EFED' }}
+                style={{ width: 25, height: 25, tintColor: PasionColor.BlancoPasion }}
               />
             </TouchableOpacity>
           ),
@@ -134,3 +133,11 @@ const styles = StyleSheet.create({
     height: 35,
   },
 });
+
+const tabColor = {
+    "Food": { "strokeStyle" : PasionColor.VerdePasion, "backgroundColor": PasionColor.VerdeFondoPasion},
+    "Sleep": {"strokeStyle" : PasionColor.AzulPasion, "backgroundColor": PasionColor.AzulFondoPasion},
+    "Training": {"strokeStyle" : PasionColor.NaranjaPasion, "backgroundColor": PasionColor.NaranjaFondoPasion},
+    "Stats": {"strokeStyle" : PasionColor.BlancoPasion, "backgroundColor": PasionColor.NegroPasion},
+    "Settings": {"strokeStyle" : PasionColor.BlancoPasion, "backgroundColor": PasionColor.NegroPasion}
+}

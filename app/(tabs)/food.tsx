@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet } from 'react-native';
+import { PasionColor } from '../../scripts/PasionColors';
 
 export default function DetailsScreen() {
   return (
@@ -13,9 +14,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#0F0A0A',
+    backgroundColor: PasionColor.NegroPasion,
   },
   text: {
-    color: '#F5EFED',
+    color: PasionColor.BlancoPasion,
   },
 });

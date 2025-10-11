@@ -1,5 +1,6 @@
 import { Tabs, useRouter } from 'expo-router';
 import { Image, StyleSheet, TouchableOpacity } from 'react-native';
+import {PasionColor} from "../../scripts/PasionColors"
 
 export default function TabLayout() {
   const router = useRouter();
@@ -7,23 +8,20 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: '#F5EFED',
-        tabBarInactiveTintColor: '#424242',
+        tabBarActiveTintColor: PasionColor.BlancoPasion,
+        tabBarInactiveTintColor: PasionColor.GrisPasion,
         tabBarShowLabel: false,
         tabBarStyle: {
           height: 90,
           paddingTop: 25,
-          backgroundColor: '#0F0A0A',
+          backgroundColor: PasionColor.NegroPasion,
           borderTopWidth: 0,
         },
-        sceneContainerStyle: {
-            backgroundColor: '#0F0A0A',
-        },
         headerStyle: {
-          backgroundColor: '#0F0A0A',
+          backgroundColor: PasionColor.NegroPasion,
         },
         headerTitleStyle: {
-          color: '#F5EFED',
+          color: PasionColor.BlancoPasion,
         },
       }}
     >
@@ -40,7 +38,7 @@ export default function TabLayout() {
             <TouchableOpacity onPress={() => { /* Lógica del botón aquí */ }} style={{ marginRight: 25 }}>
               <Image
                 source={require('../../assets/images/UserIcon.png')}
-                style={{ width: 25, height: 25, tintColor: '#F5EFED' }}
+                style={{ width: 25, height: 25, tintColor: PasionColor.BlancoPasion }}
               />
             </TouchableOpacity>
           ),
@@ -59,7 +57,7 @@ export default function TabLayout() {
             <TouchableOpacity onPress={() => { /* Lógica del botón aquí */ }} style={{ marginRight: 25 }}>
               <Image
                 source={require('../../assets/images/UserIcon.png')}
-                style={{ width: 25, height: 25, tintColor: '#F5EFED' }}
+                style={{ width: 25, height: 25, tintColor: PasionColor.BlancoPasion }}
               />
             </TouchableOpacity>
           ),
@@ -79,7 +77,7 @@ export default function TabLayout() {
             <TouchableOpacity onPress={() => { /* Lógica del botón aquí */ }} style={{ marginRight: 25 }}>
               <Image
                 source={require('../../assets/images/UserIcon.png')}
-                style={{ width: 25, height: 25, tintColor: '#F5EFED' }}
+                style={{ width: 25, height: 25, tintColor: PasionColor.BlancoPasion }}
               />
             </TouchableOpacity>
             ),
@@ -98,7 +96,7 @@ export default function TabLayout() {
             <TouchableOpacity onPress={() => { /* Lógica del botón aquí */ }} style={{ marginRight: 25 }}>
               <Image
                 source={require('../../assets/images/UserIcon.png')}
-                style={{ width: 25, height: 25, tintColor: '#F5EFED' }}
+                style={{ width: 25, height: 25, tintColor: PasionColor.BlancoPasion }}
               />
             </TouchableOpacity>
           ),
@@ -118,7 +116,7 @@ export default function TabLayout() {
             <TouchableOpacity onPress={() => { /* Lógica del botón aquí */ }} style={{ marginRight: 25 }}>
               <Image
                 source={require('../../assets/images/UserIcon.png')}
-                style={{ width: 25, height: 25, tintColor: '#F5EFED' }}
+                style={{ width: 25, height: 25, tintColor: PasionColor.BlancoPasion }}
               />
             </TouchableOpacity>
           ),

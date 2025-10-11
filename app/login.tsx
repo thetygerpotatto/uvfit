@@ -6,8 +6,18 @@ export default function LoginScreen() {
   const router = useRouter();
 
   const handleLogin = () => {
-    // Lógica
-    router.replace('/(tabs)/Training');
+    // --- Lógica de Autenticación ---
+    // 1. Aquí harías la llamada a tu backend para verificar el usuario y contraseña.
+    const isNewUser = true; // <<-- Simulación: Cambia esto a `false` para probar el otro flujo.
+
+    // 2. Basado en la respuesta, decides a dónde redirigir.
+    if (isNewUser) {
+      // Si es un usuario nuevo, lo mandas al formulario de datos personales.
+      router.replace('/PersonalData');
+    } else {
+      // Si es un usuario que ya existe, lo mandas a la app principal.
+      router.replace('/(tabs)/Training');
+    }
   };
 
   const handlePressRegister = () => {

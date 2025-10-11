@@ -4,7 +4,6 @@ import {PasionColor} from "../../scripts/PasionColors"
 
 export default function TabLayout() {
   const router = useRouter();
-
   return (
     <Tabs
       screenOptions = {({route}) => ({
@@ -14,12 +13,16 @@ export default function TabLayout() {
         tabBarStyle: {
           height: 90,
           paddingTop: 25,
+          position: "absolute",
+          marginBottom: 25,
+          marginHorizontal: 20,
           backgroundColor: tabColor[route.name].backgroundColor,
-          borderTopWidth: 0,
+          borderWidth: 1,
+          borderColor: PasionColor.GrisPasion,
           borderRadius: 20,
         },
         headerStyle: {
-          backgroundColor: tabColor[route.name].backgroundColor,
+          backgroundColor: PasionColor.NegroPasion,
         },
         headerTitleStyle: {
           color: tabColor[route.name].strokeStyle,
@@ -28,7 +31,7 @@ export default function TabLayout() {
     >
       <Tabs.Screen
         name="Training"
-        options={{
+        options = {({route}) => ({
           tabBarIcon: ({ color }) => (
             <Image
               source={require('../../assets/images/TrainingIcon.png')}
@@ -39,11 +42,11 @@ export default function TabLayout() {
             <TouchableOpacity onPress={() => { /* Lógica del botón aquí */ }} style={{ marginRight: 25 }}>
               <Image
                 source={require('../../assets/images/UserIcon.png')}
-                style={{ width: 25, height: 25, tintColor: PasionColor.BlancoPasion }}
+                style={{ width: 25, height: 25, tintColor: tabColor[route.name].strokeStyle }}
               />
             </TouchableOpacity>
           ),
-        }}
+        })}
       />
       <Tabs.Screen
         name="Sleep"
@@ -134,7 +137,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const tabColor = {
+const tabColor: Record<string, any> = {
     "Food": { "strokeStyle" : PasionColor.VerdePasion, "backgroundColor": PasionColor.VerdeFondoPasion},
     "Sleep": {"strokeStyle" : PasionColor.AzulPasion, "backgroundColor": PasionColor.AzulFondoPasion},
     "Training": {"strokeStyle" : PasionColor.NaranjaPasion, "backgroundColor": PasionColor.NaranjaFondoPasion},

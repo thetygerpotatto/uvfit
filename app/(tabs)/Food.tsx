@@ -14,9 +14,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: PasionColor.NegroPasion,
+    backgroundColor: PasionColor.VerdeFondoPasion,
   },
   text: {
-    color: PasionColor.BlancoPasion,
+    color: PasionColor.VerdePasion,
   },
 });

@@ -1,29 +1,74 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { PasionColor } from '@/scripts/PasionColors';
+import { useSQLiteContext } from 'expo-sqlite';
+import { useState } from 'react';
+import { useFocusEffect } from 'expo-router';
+import { useCallback } from 'react';
+import { login_request, User } from '@/scripts/database_concetion'
+import { useAsyncStorage } from '@react-native-async-storage/async-storage'
+
+interface userEntry {
+  Email: string;
+  isNew: boolean;
+}
 
 export default function LoginScreen() {
-  const router = useRouter();
+    const router = useRouter();
+    const db = useSQLiteContext();
+    const [name, setName] = useState('');
+    const [password, setPassword] = useState('');
+    const {getItem, setItem, removeItem} = useAsyncStorage('Token')
 
-  const handleLogin = () => {
+    let logged = false;
+
+    const handleSession = async () => {
+        const token = await getItem();
+        if (!token) {
+            logged = false;
+            console.log("NO SESSION");
+        } else {
+            logged = true;
+        }
+    }
+
+    const handleLogin = async () => {
     // --- Lógica de Autenticación ---
     // 1. Aquí harías la llamada a tu backend para verificar el usuario y contraseña.
-    const isNewUser = true; // <<-- Simulación: Cambia esto a `false` para probar el otro flujo.
+        const currentUser: userEntry | null = await db.getFirstAsync("SELECT * FROM user;"); ;
+        console.log("current user: ", currentUser);
 
-    // 2. Basado en la respuesta, decides a dónde redirigir.
-    if (isNewUser) {
-      // Si es un usuario nuevo, lo mandas al formulario de datos personales.
-      router.replace('/PersonalData');
-    } else {
-      // Si es un usuario que ya existe, lo mandas a la app principal.
-      router.replace('/(tabs)/Training');
-    }
-  };
+        const isNewUser = !currentUser ? false : currentUser.isNew
+
+        console.log("nuevo usuario", isNewUser)
+        const result = await login_request({email: name, password: password, name: null});
+
+        if (result) {
+            await db.runAsync("UPDATE user SET email = ?;", [name])
+            logged = true;
+        } else {
+            logged = false
+            Alert.alert("Incorrect User or Password")
+        }
+
+        // 2. Basado en la respuesta, decides a dónde redirigir.
+        if (isNewUser && logged) {
+          // Si es un usuario nuevo, lo mandas al formulario de datos personales.
+          router.push('/PersonalData');
+        } else if (!isNewUser && logged) {
+            router.replace("/(tabs)/Training")
+        }
+    };
 
   const handlePressRegister = () => {
     router.push('/register');
   };
 
+  useFocusEffect(
+      useCallback(() => {
+          handleSession()
+      }, [])
+  )
   return (
     <View style={styles.container}>
       <Text style={styles.title}>UV-Fit</Text>
@@ -34,12 +79,16 @@ export default function LoginScreen() {
         placeholderTextColor="#888"
         keyboardType="email-address"
         autoCapitalize="none"
+        onChangeText={setName}
+        value={name}
       />
       <TextInput
         style={styles.input}
         placeholder="Password"
         placeholderTextColor="#888"
         secureTextEntry
+        onChangeText={setPassword}
+        value={password}
       />
 
       <TouchableOpacity style={styles.button} onPress={handleLogin}>

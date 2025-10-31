@@ -1,14 +1,33 @@
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { PasionColor } from '@/scripts/PasionColors';
+import { useState } from 'react';
+import { useSQLiteContext } from 'expo-sqlite';
+import { register_request, User} from "@/scripts/database_concetion"
 
 export default function RegisterScreen() {
   const router = useRouter();
+  const db = useSQLiteContext();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [cpassword, setcPassword] = useState('');
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     // logica
-    Alert.alert('Registration Successful', 'You can now log in.');
-    router.back();
+    if (password !== cpassword) {
+        Alert.alert("Las contraseñas no coinciden");
+        return;
+    }
+    const response = await register_request({email: email, password: password, name: null}) 
+    const result = response.status;
+    console.log(response);
+    console.log(result);
+    if (result){
+        router.back();
+    } else {
+        Alert.alert("An Error ocurred while register")
+    }
+
   };
 
   const handleLoginButton= () => {
@@ -25,18 +44,24 @@ export default function RegisterScreen() {
         placeholderTextColor="#888"
         keyboardType="email-address"
         autoCapitalize="none"
+        onChangeText={setEmail}
+        value={email}
       />
       <TextInput
         style={styles.input}
         placeholder="Password"
         placeholderTextColor="#888"
         secureTextEntry
+        onChangeText={setPassword}
+        value={password}
       />
        <TextInput
         style={styles.input}
         placeholder="Confirm Password"
         placeholderTextColor="#888"
         secureTextEntry
+        onChangeText={setcPassword}
+        value={cpassword}
       />
 
       <TouchableOpacity style={styles.button} onPress={handleRegister}>

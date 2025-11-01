@@ -12,12 +12,23 @@ export default function RegisterScreen() {
   const [password, setPassword] = useState('');
   const [cpassword, setcPassword] = useState('');
 
+  const isValidEmail = (email_dir) => {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(String(email_dir).toLowerCase());
+  };
+
   const handleRegister = async () => {
     // logica
     if (password !== cpassword) {
         Alert.alert("Las contraseñas no coinciden");
         return;
     }
+
+    if (!isValidEmail(email)) {
+        Alert.alert("Ingresa una direccion de correo valida")
+        return;
+    }
+
     const response = await register_request({email: email, password: password, name: null}) 
     const result = response.status;
     console.log(response);

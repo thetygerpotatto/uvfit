@@ -5,7 +5,7 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { useState } from 'react';
 import { useFocusEffect } from 'expo-router';
 import { useCallback } from 'react';
-import { login_request, User } from '@/scripts/database_concetion'
+import { login_request } from '@/scripts/database_concetion'
 import { useAsyncStorage } from '@react-native-async-storage/async-storage'
 
 interface userEntry {

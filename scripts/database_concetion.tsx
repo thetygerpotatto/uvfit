@@ -41,3 +41,16 @@ export const register_request = async (user: User) => {
     const data = await res.json()
     return data
 }
+
+export const set_name_request = async (name: String) => {
+    const {getItem, setItem, removeItem} = useAsyncStorage('Token')
+    const token = await getItem()
+    const res = await fetch(SERVER_URL + "/update-name", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer "+ token
+        },
+        body : JSON.stringify({name: name})
+    });
+}

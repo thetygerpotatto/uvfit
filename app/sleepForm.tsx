@@ -1,22 +1,33 @@
 import { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert, ScrollView, Button } from 'react-native';
 import { useRouter } from 'expo-router';
-import FormField from '../components/FormField'; // Importamos el componente reutilizable
 import { PasionColor } from '@/scripts/PasionColors';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { useSQLiteContext } from 'expo-sqlite';
 
 export default function PersonalDataScreen() {
   const router = useRouter();
   const [hour, setTime] = useState(new Date());
   const [isVisible, setIsVisible] = useState(false)
+  const db = useSQLiteContext()
 
   const handleContinue = () => {
+    const updateTime = async (t) => {
+        await db.runAsync("UPDATE user_data SET laydown_time = ?;", [t])
+        const res = await db.getFirstAsync("SELECT * FROM user_data;");
+        console.log(res);
+    }
+
     if (!hour) {
       Alert.alert('Incomplete', 'Please fill in all fields.');
       return;
     }
-
+    
     console.log('Sleep time:', { hour});
+    const hours = hour.getHours().toString().padStart(2, "0");
+    const minutes = hour.getMinutes().toString().padStart(2, "0");
+    updateTime(hours + ":" + minutes + ":00")
+
     router.replace('/(tabs)/Training');
   };
 

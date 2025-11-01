@@ -11,9 +11,8 @@ export default function RootLayout() {
                         email TEXT PRIMARY KEY,
                         isNew BOOLEAN NOT NULL
                     );
-
                     CREATE TABLE IF NOT EXISTS user_data (
-                        id SERIAL PRIMARY KEY,
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
                         name TEXT NOT NULL,
                         height INTEGER NOT NULL,
                         weight INTEGER NOT NULL,
@@ -21,12 +20,12 @@ export default function RootLayout() {
                         activity TEXT CHECK (activity IN ('LOW', 'MEDIUM', 'HIGH')),
                         laydown_time TIME
                     );
-
                     pragma journal_mode=WAL;
                     `);
             }}
             options={{useNewConnection: false}}
         >
+        
         <Stack>
           <Stack.Screen name="login" options={{ headerShown: false }} />
           <Stack.Screen name="register" options={{ headerShown: false }} />

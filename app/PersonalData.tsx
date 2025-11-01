@@ -3,31 +3,57 @@ import { View, Text, StyleSheet, TouchableOpacity, Alert, ScrollView } from 'rea
 import { useRouter } from 'expo-router';
 import FormField from '../components/FormField'; // Importamos el componente reutilizable
 import { PasionColor } from '@/scripts/PasionColors';
+import { useSQLiteContext } from 'expo-sqlite';
+import { set_name_request } from '@/scripts/database_concetion';
 
 const genderOptions = ['Masculino', 'Femenino', 'Otro'];
 const activityOptions = ['1-2 Dias/Semana', '3-5 Dias/Semana', '6-7 Dias/Semana'];
 
 export default function PersonalDataScreen() {
-  const router = useRouter();
-  const [name, setName] = useState('');
-  const [age, setAge] = useState('');
-  const [height, setHeight] = useState('');
-  const [weight, setWeight] = useState('');
-  const [gender, setGender] = useState('');
-  const [activityLevel, setActivityLevel] = useState('');
+    const router = useRouter();
+    const db = useSQLiteContext();
+    const [name, setName] = useState('');
+    const [age, setAge] = useState('');
+    const [height, setHeight] = useState('');
+    const [weight, setWeight] = useState('');
+    const [gender, setGender] = useState('');
+    const [activityLevel, setActivityLevel] = useState('');
 
-
-  const handleContinue = () => {
-    if (!name || !age || !height || !weight || !gender || !activityLevel) {
-      Alert.alert('Incomplete', 'Please fill in all fields.');
-      return;
+    const mapAcvitityLevel = (act) => {
+        const act2 = ['LOW', 'MEDIUM', 'HIGH'];
+        return act2[activityOptions.indexOf(act)]
     }
 
-    console.log('Personal Data:', { name, age, height, weight, gender, activityLevel });
-    router.push("/sleepForm");
-  };
+    const mapGender = (g) => {
+        const gender = ['MALE', 'FEMALE', 'OTHER']
+        return gender[genderOptions.indexOf(g)]
+    }
 
-  return (
+    const handleContinue = () => {
+        if (!name || !age || !height || !weight || !gender || !activityLevel) {
+          Alert.alert('Incomplete', 'Please fill in all fields.');
+          return;
+        }
+
+        const sendData = async () => {
+            await db.runAsync(`UPDATE user_data
+                        SET 
+                            name = ?, 
+                            height = ?,
+                            weight = ?,
+                            gender = ?,
+                            activity = ?
+                        WHERE id = 1;
+                        `, [name, age, height, mapGender(gender), mapAcvitityLevel(activityLevel)])
+            await db.runAsync("UPDATE user SET isNew = false")
+        }
+
+        sendData();
+        set_name_request(name);
+        router.push("/sleepForm");
+    };
+
+    return (
     <ScrollView style={styles.scrollView} contentContainerStyle={styles.container}>
       <Text style={styles.title}>Personal Details</Text>
       <Text style={styles.subtitle}>Help us customize your experience.</Text>
@@ -74,7 +100,7 @@ export default function PersonalDataScreen() {
         <Text style={styles.buttonText}>Continue</Text>
       </TouchableOpacity>
     </ScrollView>
-  );
+    );
 }
 
 const styles = StyleSheet.create({

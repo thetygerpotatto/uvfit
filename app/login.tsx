@@ -29,6 +29,7 @@ export default function LoginScreen() {
             console.log("NO SESSION");
         } else {
             logged = true;
+            router.replace("/Training")
         }
     }
 

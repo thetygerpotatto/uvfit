@@ -1,5 +1,5 @@
 import { useAsyncStorage } from '@react-native-async-storage/async-storage'
-const SERVER_URL = "http://uvfit.azurewebsites.net/"
+const SERVER_URL = "https://uvfit.azurewebsites.net"
 
 export interface User {
     name: String | null
@@ -17,7 +17,6 @@ export const login_request = async (user: User) => {
             },
             body: JSON.stringify(user)
         });
-
         const data = await res.json();
 
         if (data.access_token) {

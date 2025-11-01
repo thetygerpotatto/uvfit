@@ -1,5 +1,5 @@
 import { useAsyncStorage } from '@react-native-async-storage/async-storage'
-const SERVER_URL = "http://192.168.18.12:8000"
+const SERVER_URL = "http://uvfit.azurewebsites.net/"
 
 export interface User {
     name: String | null

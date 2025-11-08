@@ -12,7 +12,7 @@ export default function RegisterScreen() {
   const [password, setPassword] = useState('');
   const [cpassword, setcPassword] = useState('');
 
-  const isValidEmail = (email_dir) => {
+  const isValidEmail = (email_dir: string) => {
       const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return re.test(String(email_dir).toLowerCase());
   };
@@ -29,7 +29,8 @@ export default function RegisterScreen() {
         return;
     }
 
-    const response = await register_request({email: email, password: password, name: null}) 
+    const response = await register_request({email: email, password: password}) 
+    console.log("R: ", response)
     const result = response.status;
     console.log(response);
     console.log(result);

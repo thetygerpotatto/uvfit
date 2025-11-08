@@ -2,8 +2,10 @@ import { PasionColor } from '@/scripts/PasionColors';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, ScrollView } from 'react-native';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
+import { useSQLiteContext } from 'expo-sqlite';
 
 export default function DetailsScreen() {
+    const db = useSQLiteContext()
     const router = useRouter()
     const {removeItem} = useAsyncStorage('Token')
     
@@ -14,6 +16,7 @@ export default function DetailsScreen() {
             case "1":
                 removeItem()
                 router.replace("/login")
+                db.execAsync("UPDATE user SET email=null, isNew = True")
             break;
         }
     }

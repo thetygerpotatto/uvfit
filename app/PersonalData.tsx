@@ -4,7 +4,9 @@ import { useRouter } from 'expo-router';
 import FormField from '../components/FormField'; // Importamos el componente reutilizable
 import { PasionColor } from '@/scripts/PasionColors';
 import { useSQLiteContext } from 'expo-sqlite';
-import { set_name_request } from '@/scripts/database_concetion';
+import { update_user_data } from '@/scripts/database_concetion';
+
+import { userDataEntry } from '@/scripts/interfaces';
 
 const genderOptions = ['Masculino', 'Femenino', 'Otro'];
 const activityOptions = ['1-2 Dias/Semana', '3-5 Dias/Semana', '6-7 Dias/Semana'];
@@ -19,12 +21,12 @@ export default function PersonalDataScreen() {
     const [gender, setGender] = useState('');
     const [activityLevel, setActivityLevel] = useState('');
 
-    const mapAcvitityLevel = (act) => {
+    const mapAcvitityLevel = (act : string) => {
         const act2 = ['LOW', 'MEDIUM', 'HIGH'];
         return act2[activityOptions.indexOf(act)]
     }
 
-    const mapGender = (g) => {
+    const mapGender = (g: string) => {
         const gender = ['MALE', 'FEMALE', 'OTHER']
         return gender[genderOptions.indexOf(g)]
     }
@@ -35,21 +37,26 @@ export default function PersonalDataScreen() {
           return;
         }
 
-        const sendData = async () => {
+        const sendDataAndSync = async () => {
             await db.runAsync(`UPDATE user_data
                         SET 
                             name = ?, 
+                            age = ?,
                             height = ?,
                             weight = ?,
                             gender = ?,
-                            activity = ?
-                        WHERE id = 1;
-                        `, [name, age, height, mapGender(gender), mapAcvitityLevel(activityLevel)])
-            await db.runAsync("UPDATE user SET isNew = false")
+                            activity = ?;
+                        `, [name, age, height, weight, mapGender(gender), mapAcvitityLevel(activityLevel)])
+
+            update_user_data({name: name,
+                             age: Number(age),
+                             height: Number(height),
+                             weight: Number(weight),
+                             gender: mapGender(gender),
+                             activity : mapAcvitityLevel(activityLevel)})
         }
 
-        sendData();
-        set_name_request(name);
+        sendDataAndSync();
         router.push("/sleepForm");
     };
 

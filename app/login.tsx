@@ -7,11 +7,9 @@ import { useFocusEffect } from 'expo-router';
 import { useCallback } from 'react';
 import { login_request } from '@/scripts/database_concetion'
 import { useAsyncStorage } from '@react-native-async-storage/async-storage'
+import { userDataEntry, userEntry} from '@/scripts/interfaces';
 
-interface userEntry {
-  Email: string;
-  isNew: boolean;
-}
+import { get_user_data } from '@/scripts/database_concetion';
 
 export default function LoginScreen() {
     const router = useRouter();
@@ -21,6 +19,18 @@ export default function LoginScreen() {
     const {getItem, setItem, removeItem} = useAsyncStorage('Token')
 
     let logged = false;
+    const sync_user_data = async (res: any) => {
+        db.runAsync(`UPDATE user_data
+                     SET name = ?,
+                     age = ?,
+                     height = ?,
+                     weight = ?,
+                     gender = ?,
+                     activity = ?,
+                     laydown_time = ?
+                     WHERE id = 1;
+                     `, [res.name, res.age, res.height,  res.weight, res.gender, res.activity, res.laydowntime])
+    }
 
     const handleSession = async () => {
         const token = await getItem();
@@ -28,24 +38,28 @@ export default function LoginScreen() {
             logged = false;
             console.log("NO SESSION");
         } else {
+            const {res, status} = await get_user_data().then(data => data);
             logged = true;
-            router.replace("/Training")
+            if (status === 200) {
+                await sync_user_data(res)
+                router.replace("/Training")
+            }
         }
     }
 
     const handleLogin = async () => {
     // --- Lógica de Autenticación ---
-    // 1. Aquí harías la llamada a tu backend para verificar el usuario y contraseña.
-        const currentUser: userEntry | null = await db.getFirstAsync("SELECT * FROM user;"); ;
-        console.log("current user: ", currentUser);
-
-        const isNewUser = !currentUser ? false : currentUser.isNew
-
-        console.log("nuevo usuario", isNewUser)
-        const result = await login_request({email: name, password: password, name: null});
-
+    // 1. Llamada al backend para verificar el usuario y contraseña.
+        const result = await login_request({email: name, password: password});
+        let isNewUser;
         if (result) {
             await db.runAsync("UPDATE user SET email = ?;", [name])
+            const data = await get_user_data().then(data => data.res)
+            console.log(data)
+
+            const currentUser: userEntry | null = await db.getFirstAsync("SELECT * FROM user;"); ;
+
+            isNewUser = !currentUser ? false : currentUser.isNew
             logged = true;
         } else {
             logged = false

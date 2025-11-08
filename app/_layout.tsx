@@ -11,11 +11,13 @@ export default function RootLayout() {
                         email TEXT PRIMARY KEY,
                         isNew BOOLEAN NOT NULL
                     );
+
                     CREATE TABLE IF NOT EXISTS user_data (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        name TEXT NOT NULL,
-                        height INTEGER NOT NULL,
-                        weight INTEGER NOT NULL,
+                        name TEXT,
+                        age INTEGER,
+                        height INTEGER,
+                        weight INTEGER,
                         gender TEXT CHECK (gender IN ('MALE', 'FEMALE', 'OTHER')),
                         activity TEXT CHECK (activity IN ('LOW', 'MEDIUM', 'HIGH')),
                         laydown_time TIME

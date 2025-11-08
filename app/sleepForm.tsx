@@ -5,6 +5,8 @@ import { PasionColor } from '@/scripts/PasionColors';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { useSQLiteContext } from 'expo-sqlite';
 
+import { update_user_data } from '@/scripts/database_concetion';
+
 export default function PersonalDataScreen() {
   const router = useRouter();
   const [hour, setTime] = useState(new Date());
@@ -12,10 +14,10 @@ export default function PersonalDataScreen() {
   const db = useSQLiteContext()
 
   const handleContinue = () => {
-    const updateTime = async (t) => {
-        await db.runAsync("UPDATE user_data SET laydown_time = ?;", [t])
-        const res = await db.getFirstAsync("SELECT * FROM user_data;");
-        console.log(res);
+    const updateTime = async (t: string) => {
+        db.runAsync("UPDATE user_data SET laydown_time = ?;", [t])
+        db.runAsync("UPDATE user SET isNew = false")
+        update_user_data({laydowntime : t, isNew: false})
     }
 
     if (!hour) {
@@ -23,7 +25,6 @@ export default function PersonalDataScreen() {
       return;
     }
     
-    console.log('Sleep time:', { hour});
     const hours = hour.getHours().toString().padStart(2, "0");
     const minutes = hour.getMinutes().toString().padStart(2, "0");
     updateTime(hours + ":" + minutes + ":00")

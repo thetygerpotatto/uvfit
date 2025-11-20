@@ -5,7 +5,7 @@ export default function DetailsScreen() {
   return (
     <View style={styles.container}>
         <View style={styles.infoContainer}> 
-            <Text style={styles.text}>Sleep DETAILS</Text>
+            
         </View>
     </View>
   );

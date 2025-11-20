@@ -13,14 +13,20 @@ export const login_request = async (user: User) => {
             },
             body: JSON.stringify(user)
         });
-        const data = await res.json();
+        if (res.ok) {
+            const data = await res.json();
 
-        if (data.access_token) {
-            setItem(data.access_token);
-            return true
+            if (data.access_token) {
+                setItem(data.access_token);
+                return true
+            }
+        } else {
+            console.log(res.statusText)
+            return false
         }
-    } catch (err) {
-        console.log("ERROR: ", err)
+
+    } catch (err: Error | any) {
+        console.error("ERROR: ", err)
         return false
     }
 }

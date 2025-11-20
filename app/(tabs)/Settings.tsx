@@ -17,6 +17,8 @@ export default function DetailsScreen() {
                 removeItem()
                 router.replace("/login")
                 db.execAsync("UPDATE user SET email=null, isNew = True")
+            case "2":
+                router.replace("/Stats")
             break;
         }
     }

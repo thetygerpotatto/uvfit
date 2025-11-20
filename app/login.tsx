@@ -55,7 +55,7 @@ export default function LoginScreen() {
         if (result) {
             await db.runAsync("UPDATE user SET email = ?;", [name])
             const data = await get_user_data().then(data => data.res)
-            console.log(data)
+            sync_user_data(data)
 
             const currentUser: userEntry | null = await db.getFirstAsync("SELECT * FROM user;"); ;
 

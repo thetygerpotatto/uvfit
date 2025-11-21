@@ -19,3 +19,10 @@ export interface userDataEntry {
     laydowntime: string | null | undefined
     isNew: boolean | null | undefined
 }
+
+export interface DayContextType {
+  selectedDay: number;
+  setSelectedDay: React.Dispatch<React.SetStateAction<number>>;
+  currentDay: number;
+  setCurrentDay: React.Dispatch<React.SetStateAction<number>>;
+};

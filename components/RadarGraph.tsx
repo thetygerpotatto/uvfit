@@ -1,4 +1,3 @@
-import { View } from "react-native"
 import React from "react"
 import { RadarChart } from '@salmonco/react-native-radar-chart'
 import { PasionColor } from "@/scripts/PasionColors";

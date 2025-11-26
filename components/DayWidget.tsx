@@ -4,7 +4,7 @@ import { TouchableOpacity } from "react-native";
 import { useDayContex } from "./DayContext";
 import { DayContextType } from "@/scripts/interfaces";
 export default function DayWidget() {
-    const {selectedDay, setSelectedDay, currentDay, setCurrentDay}: DayContextType | null = useDayContex()
+    const {selectedDay, setSelectedDay, setCurrentDay} = useDayContex()
     const days = getLast7Days(selectedDay)
             const DayBubbles = days.map((d, index) => (
                 <TouchableOpacity key={index} 

@@ -4,7 +4,7 @@ const DayInfo = createContext(null)
 
 export function DayContext({children}: any) {
     const [selectedDay, setSelectedDay] = useState(0)
-    const [currentDay, setCurrentDay] = useState(new Date().getDay())
+    const [currentDay, setCurrentDay] = useState(new Date())
 
     return (
         <DayInfo value={{selectedDay, setSelectedDay, currentDay, setCurrentDay}}> 

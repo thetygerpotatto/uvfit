@@ -20,7 +20,7 @@ export default function LoginScreen() {
 
     let logged = false;
     const sync_user_data = async (res: any) => {
-        db.runAsync(`UPDATE user_data
+        await db.runAsync(`UPDATE user_data
                      SET name = ?,
                      age = ?,
                      height = ?,
@@ -29,7 +29,10 @@ export default function LoginScreen() {
                      activity = ?,
                      laydown_time = ?
                      WHERE id = 1;
-                     `, [res.name, res.age, res.height,  res.weight, res.gender, res.activity, res.laydowntime])
+                     `, [res.name, res.age, res.height,  res.weight, res.gender, res.activity, res.laydowntime]);
+        await db.runAsync(`UPDATE user
+                     SET isNew = ?;
+                     `, [res.isNew])
     }
 
     const handleSession = async () => {
@@ -39,10 +42,12 @@ export default function LoginScreen() {
             console.log("NO SESSION");
         } else {
             const {res, status} = await get_user_data().then(data => data);
-            logged = true;
             if (status === 200) {
+                logged = true;
                 await sync_user_data(res)
                 router.replace("/Training")
+            } else {
+                logged = false;
             }
         }
     }
@@ -54,12 +59,12 @@ export default function LoginScreen() {
         let isNewUser;
         if (result) {
             await db.runAsync("UPDATE user SET email = ?;", [name])
-            const data = await get_user_data().then(data => data.res)
-            sync_user_data(data)
+            const {res, status} = await get_user_data().then(data => data);
+            sync_user_data(res)
 
             const currentUser: userEntry | null = await db.getFirstAsync("SELECT * FROM user;"); ;
-
             isNewUser = !currentUser ? false : currentUser.isNew
+
             logged = true;
         } else {
             logged = false

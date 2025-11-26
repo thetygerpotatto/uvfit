@@ -11,16 +11,17 @@ interface FormFieldProps {
 }
 
 export default function FormField({ label, ...props }: FormFieldProps) {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.label}>{label}</Text>
-      <TextInput
-        style={styles.input}
-        placeholderTextColor="#888"
-        {...props}
-      />
-    </View>
-  );
+
+    return (
+        <View style={styles.container}>
+          <Text style={styles.label}>{label}</Text>
+          <TextInput
+            style={styles.input}
+            placeholderTextColor="#888"
+            {...props}
+          />
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({

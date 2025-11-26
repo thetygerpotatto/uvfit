@@ -27,6 +27,7 @@ export default function DetailsScreen() {
             <View style={styles.infoContainer}> 
                 <Text style={styles.text}>Settings</Text>
                 <FlatList
+                    bounces={true}
                     style={styles.list}
                     data={options}
                     keyExtractor = {(item) => item.id}

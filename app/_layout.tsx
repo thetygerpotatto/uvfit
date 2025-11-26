@@ -22,6 +22,14 @@ export default function RootLayout() {
                         activity TEXT CHECK (activity IN ('LOW', 'MEDIUM', 'HIGH')),
                         laydown_time TIME
                     );
+                    CREATE TABLE IF NOT EXISTS metrics (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        metric_type TEXT NOT NULL,
+                        value REAL,
+                        metadata TEXT,
+                        timestamp_start TEXT NOT NULL,
+                        timestamp_end   TEXT
+                    );
                     pragma journal_mode=WAL;
                     `);
             }}
@@ -34,6 +42,7 @@ export default function RootLayout() {
           <Stack.Screen name="PersonalData" options={{ headerShown: false }} />
           <Stack.Screen name="sleepForm" options={{ headerShown: false }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="FoodForm" options={{ headerShown: false }} />
         </Stack>
 
         </SQLiteProvider>

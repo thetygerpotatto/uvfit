@@ -17,6 +17,8 @@ export default function DetailsScreen() {
                 removeItem()
                 router.replace("/login")
                 db.execAsync("UPDATE user SET email=null, isNew = True")
+            case "2":
+                router.replace("/Stats")
             break;
         }
     }
@@ -25,6 +27,7 @@ export default function DetailsScreen() {
             <View style={styles.infoContainer}> 
                 <Text style={styles.text}>Settings</Text>
                 <FlatList
+                    bounces={true}
                     style={styles.list}
                     data={options}
                     keyExtractor = {(item) => item.id}

@@ -13,14 +13,23 @@ export const login_request = async (user: User) => {
             },
             body: JSON.stringify(user)
         });
-        const data = await res.json();
+        if (res.ok) {
+            const data = await res.json();
 
-        if (data.access_token) {
-            setItem(data.access_token);
-            return true
+            if (data.access_token) {
+                setItem(data.access_token);
+                return true
+            }
+        } else {
+            console.log(res.statusText)
+            return false
         }
-    } catch (err) {
-        console.log("ERROR: ", err)
+
+    } catch (err: Error | any) {
+        console.error("ERROR: ", err)
+        console.log(
+            "errorsito"
+        )
         return false
     }
 }
@@ -96,7 +105,6 @@ export const update_user_data = async({name = null,
 export const get_user_data = async() => {
     const {getItem, removeItem} = useAsyncStorage('Token');
     const token = await getItem();
-    console.log(token)
     const send = await fetch(SERVER_URL + "/get-userdata", {
         method: "GET",
         headers: {
@@ -107,7 +115,7 @@ export const get_user_data = async() => {
     const res: userDataEntry = await send.json();
     const status = send.status;
     if (status === 401) {
-        console.log("ERROR 401")
+        console.error("ERROR 401")
         await removeItem()
     }
 

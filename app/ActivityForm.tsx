@@ -1,12 +1,11 @@
 import { useRouter } from "expo-router"
 import { useSQLiteContext } from "expo-sqlite"
-import { View, StyleSheet, Text, TextInput, TouchableOpacity } from "react-native"
+import { View, StyleSheet, Text, TouchableOpacity } from "react-native"
 import { PasionColor } from "@/scripts/PasionColors"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { useState } from "react"
 import DateTimePicker from "react-native-modal-datetime-picker"
 import TextFieldEntry from "@/components/TextFieldEntry"
-import { Picker } from "@react-native-picker/picker"
 
 interface FoodMetaData {
     FoodType: String
@@ -20,54 +19,38 @@ export default function ActivityForm() {
     const db = useSQLiteContext()
     const router = useRouter()
     const [activity, setActivity] = useState("")
-    const [proteins, setProteins] = useState("0")
-    const [carbs, setCarbs] = useState("0")
-    const [foodtype, setFoodType] = useState("breakfast")
+    const [activityDate, setActivityDate] = useState(new Date())
+    const [calories, setCalories] = useState("0")
+    const [showPicker, setShowPicker] = useState(false)
       
     const handlePress = () => {
-        const metadata = {foodtype, calories, proteins, carbs}
-        console.log(date.toISOString())
+        const metadata = {activity, calories}
         db.runAsync(`INSERT INTO metrics (metric_type, metadata, timestamp_start)
-                   VALUES ("food", ?, ?)`,
-                  [JSON.stringify(metadata), date.toISOString()])
+                   VALUES ("training", ?, ?)`,
+                  [JSON.stringify(metadata), activityDate.toISOString()])
         router.back()
     }
 
     return (
     <SafeAreaView style={styles.container}>
             <View style={styles.headerContainer}>
-                <Text style={styles.titleFont}>Add a Meal</Text>
+                <Text style={styles.titleFont}>Add Activity</Text>
                 <TouchableOpacity onPress={handlePress}>
                     <Text style={styles.saveText}>Save</Text></TouchableOpacity>
             </View>
             <View style={styles.separator}/>
             <View style={styles.entryContainer}>
-                <Text style={styles.text}>Food Type</Text>
-                <Picker
-                    style={[{flex: 1, color: PasionColor.BlancoPasion}]}
-                    dropdownIconColor={PasionColor.BlancoPasion}
-                    selectedValue={foodtype}
-                    onValueChange={(itemValue, itemIndex) => {
-                        setFoodType(itemValue)
-                    }}>
-                    <Picker.Item label="Breakfast" value="breakfast" />
-                    <Picker.Item label="Lunch" value="lunch"/>
-                    <Picker.Item label="Dinner" value="dinner"/>
-                </Picker>
-            </View>
-            <View style={styles.separator}/>
-            <View style={styles.entryContainer}>
-                <Text style={styles.text}>Time</Text>
+                <Text style={styles.text}>Fecha</Text>
                 <TouchableOpacity onPress={() => setShowPicker(true)}>
                     <Text style={[styles.text, styles.datimeButton, {color: PasionColor.GrisClaroPasion}]}>
-                        {date.toLocaleString()}
+                        {activityDate.toLocaleString()}
                     </Text>
                 </TouchableOpacity>
                 {showPicker && (<DateTimePicker 
                                 mode="datetime"
                                 isVisible={showPicker}
                                 onConfirm={(date) => {
-                                    if (date) setDate(date)
+                                    if (date) setActivityDate(date)
                                     setShowPicker(false)
                                 }} 
                                 onCancel={() => {
@@ -77,10 +60,8 @@ export default function ActivityForm() {
                 }
             </View>
             <View style={styles.separator}/>
-            <TextFieldEntry label="Calories" unit="Cal" val={calories} setVal={setCalories}/>
-            <View style={styles.separator}/>
-            <TextFieldEntry label="Carbs" unit="g" val={carbs} setVal={setCarbs}/>
-            <TextFieldEntry label="Proteins" unit="g" val={proteins} setVal={setProteins}/>
+            <TextFieldEntry label="Activity Name" unit="" val={activity} setVal={setActivity}/>
+            <TextFieldEntry label="Calories Consumed" unit="Cal" val={calories} setVal={setCalories}/>
             <View style={styles.separator}/>
     </SafeAreaView>);
 }

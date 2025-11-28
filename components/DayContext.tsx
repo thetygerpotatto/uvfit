@@ -15,5 +15,4 @@ export function DayContext({children}: any) {
 
 export function useDayContex(){
     return useContext(DayInfo)
-
 }

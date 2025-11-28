@@ -2,7 +2,11 @@ import { PasionColor } from "@/scripts/PasionColors";
 import { View, StyleSheet, Text } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { useDayContex } from "./DayContext";
-import { DayContextType } from "@/scripts/interfaces";
+
+interface OnDayPressed {
+    onDayPressed: () => any
+}
+
 export default function DayWidget() {
     const {selectedDay, setSelectedDay, setCurrentDay} = useDayContex()
     const days = getLast7Days(selectedDay)
@@ -12,8 +16,9 @@ export default function DayWidget() {
                                         d.isToday && styles.todayDay,
                                         d.isSelectedDay && styles.selectedDay
                                         ]}
-                                  onPress={() => setDay(d.date, index)}
-                                        >
+                                  onPress={() => {
+                                      setDay(d.date, index)
+                                  }}>
                     <Text style={[styles.letters, d.isToday && styles.todayLetter, d.isSelectedDay && styles.selectedLetter]}>
                         {d.letter}
                     </Text>
@@ -26,8 +31,8 @@ export default function DayWidget() {
     );
 
     function setDay(day: Date, index: number) {
-        setSelectedDay(day.getDay());
         setCurrentDay(day);
+        setSelectedDay(day.getDay());
     }
 }
 

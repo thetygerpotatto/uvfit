@@ -43,6 +43,7 @@ export default function RootLayout() {
           <Stack.Screen name="sleepForm" options={{ headerShown: false }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="FoodForm" options={{ headerShown: false }} />
+          <Stack.Screen name="SleepDaylyForm" options={{ headerShown: false }} />
         </Stack>
 
         </SQLiteProvider>

@@ -5,8 +5,6 @@ import DayWidget from '@/components/DayWidget';
 import { useDayContex } from '@/components/DayContext';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useEffect, useState } from 'react';
-import { useFocusEffect } from 'expo-router';
-import { useCallback } from 'react';
 
 interface FoodQueryResult {
     metadata: any
@@ -16,14 +14,6 @@ interface FoodQueryResult {
 interface MealEntry {
   metadata: any;
   date: Date;
-}
-
-interface FoodMetaData {
-    FoodType: String
-    TimestampStart: Date
-    Calories: Number
-    Proteins: Number
-    Carbs: Number
 }
 
 export default function DetailsScreen() {
@@ -42,14 +32,10 @@ export default function DetailsScreen() {
     }, [currentDay])
 
     async function getMealData() {
-        setIsLoading(true)
-        const copyCurrentDay = new Date(currentDay)
-        const startDate = new Date(copyCurrentDay)
+        const startDate = new Date(currentDay)
         startDate.setHours(0,0,0,0)
-        const endDate = new Date(copyCurrentDay)
+        const endDate = new Date(currentDay)
         endDate.setHours(23,59,59,999)
-        console.log(startDate)
-        console.log(endDate)
 
         const result = await db.getAllAsync(`select metadata, timestamp_start from metrics
                     where metric_type = 'food' 
@@ -59,40 +45,24 @@ export default function DetailsScreen() {
         const newFoodData = result.map((data: FoodQueryResult) => {
             return {metadata: JSON.parse(data.metadata), date: new Date(data.timestamp_start)}
         });
-        console.log("FOOD DATA", newFoodData)
         setFoodData(newFoodData)
         setIsLoading(false);
     }
-    if (isLoading) {
-        return (
+
+    return (
         <View style={styles.container}>
             <DayWidget/>
             <View style={styles.separator}></View>
             <View style={styles.infoContainer}> 
                 <Text style={styles.text}>Meals</Text>
-                <Text style={styles.text}>Loading food info</Text>
-                <TouchableOpacity style={styles.plusContainer}
-                                    onPress={addNewmeal}>
-                    <Image source={require("../../assets/images/plusButton.png")}
-                            style={styles.plusLogo}/>
-                </TouchableOpacity>
-            </View>
-        </View>
-        );
-    } else {
-        return (
-        <View style={styles.container}>
-            <DayWidget/>
-            <View style={styles.separator}></View>
-            <View style={styles.infoContainer}> 
-                <Text style={styles.text}>Meals</Text>
-                <FlatList 
+                { isLoading && (<Text style={styles.text}>Loading food info</Text>)}
+                { !isLoading && (<FlatList 
                         data={foodData}
                         extraData={foodData}
                         renderItem = {({item}) => {
                             return (<MealItem foodtype={item.metadata.foodtype} calories={item.metadata.calories}/>)
                         }}
-                    />
+                />)}
                 <TouchableOpacity style={styles.plusContainer}
                                     onPress={addNewmeal}>
                     <Image source={require("../../assets/images/plusButton.png")}
@@ -101,8 +71,6 @@ export default function DetailsScreen() {
             </View>
         </View>
     );
-
-    }
 }
 
 function MealItem({foodtype, calories}: any) {
@@ -135,13 +103,12 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'center',
     flexDirection: "column",
-    borderRadius: 20,
     alignItems: "flex-start",
     marginLeft: "15%",
   },
   text: {
     alignItems: "center",
-    margin: "auto",
+    marginHorizontal: "auto",
     color: PasionColor.VerdePasion,
     fontSize: 35,
     fontWeight: "bold",

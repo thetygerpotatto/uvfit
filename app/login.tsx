@@ -12,6 +12,7 @@ import { userDataEntry, userEntry} from '@/scripts/interfaces';
 import { get_user_data } from '@/scripts/database_concetion';
 
 export default function LoginScreen() {
+    const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
     const db = useSQLiteContext();
     const [name, setName] = useState('');
@@ -55,6 +56,10 @@ export default function LoginScreen() {
     const handleLogin = async () => {
     // --- Lógica de Autenticación ---
     // 1. Llamada al backend para verificar el usuario y contraseña.
+        if (isLoading) {
+            return;
+        }
+        setIsLoading(true);
         const result = await login_request({email: name, password: password});
         let isNewUser;
         if (result) {
@@ -70,6 +75,8 @@ export default function LoginScreen() {
             logged = false
             Alert.alert("Incorrect User or Password")
         }
+
+        setIsLoading(false)
 
         // 2. Basado en la respuesta, decides a dónde redirigir.
         if (isNewUser && logged) {
@@ -112,7 +119,7 @@ export default function LoginScreen() {
       />
 
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
+        <Text style={styles.buttonText}>{isLoading ? "Loading...": "Login"}</Text>
       </TouchableOpacity>
 
       <Text style={styles.registerText}>Don't have an account?</Text>

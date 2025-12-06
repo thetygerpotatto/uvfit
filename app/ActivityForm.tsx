@@ -3,17 +3,9 @@ import { useSQLiteContext } from "expo-sqlite"
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native"
 import { PasionColor } from "@/scripts/PasionColors"
 import { SafeAreaView } from "react-native-safe-area-context"
-import { useState } from "react"
+import { use, useState } from "react"
 import DateTimePicker from "react-native-modal-datetime-picker"
 import TextFieldEntry from "@/components/TextFieldEntry"
-
-interface FoodMetaData {
-    FoodType: String
-    TimestampStart: Date
-    Calories: Number
-    Proteins: Number
-    Carbs: Number
-}
 
 export default function ActivityForm() {
     const db = useSQLiteContext()
@@ -30,6 +22,7 @@ export default function ActivityForm() {
                   [JSON.stringify(metadata), activityDate.toISOString()])
         router.back()
     }
+
 
     return (
     <SafeAreaView style={styles.container}>

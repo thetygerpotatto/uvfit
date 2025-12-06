@@ -3,14 +3,20 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, ScrollView } from '
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
+import { openHealthConnectSettings } from 'react-native-health-connect';
 
 export default function DetailsScreen() {
     const db = useSQLiteContext()
     const router = useRouter()
     const {removeItem} = useAsyncStorage('Token')
+    const openHC = async () => {
+        openHealthConnectSettings()
+    }
     
     const options = [{id: "1", label: "Cerrar Sesion"},
-                    {id: "2", label: "Ver datos Fisicos"}];
+                    {id: "2", label: "Ver datos Fisicos"},
+                    {id: "3", label: "Health Connect"}];
+
     const handlePress = (id: string) => {
         switch(id){
             case "1":
@@ -19,6 +25,8 @@ export default function DetailsScreen() {
                 db.execAsync("UPDATE user SET email=null, isNew = True")
             case "2":
                 router.replace("/Stats")
+            case "3":
+                openHC()
             break;
         }
     }

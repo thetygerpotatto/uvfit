@@ -42,15 +42,6 @@ export default function DetailsScreen() {
         router.push("/ActivityForm")
     }
 
-    const seeInitalization = async () => {
-        const inicio = new Date(Date.now() - 1000*60*60*24)
-        const fin = new Date()
-        console.log("is av", isAvailable)
-        console.log("is Initialized", isInitialized)
-        console.log("CAL", await getCalories(inicio))
-        console.log("STEPS", await getSteps(inicio, fin))
-    }
-    
     useEffect(() => {
         getActivityData()
     }, [currentDay]);
@@ -68,16 +59,16 @@ export default function DetailsScreen() {
 
         const heartrates = await getHeartRate(startDate, endDate)
         const avgHR = (heartrates.length !== 0) 
-            ? heartrates.map((record) => record.bpm).reduce((sum, bpm) => {
+            ? (heartrates.map((record) => record.bpm).reduce((sum, bpm) => {
                 return bpm + sum
-            }) / heartrates.length
+            }) / heartrates.length).toFixed()
             : "No data"
         if (startDate < today) {
             setCurrentHeartRate(avgHR)
         }
         else {
             const latestHR = await getLatestHeartRate().then((record) => record?.bpm)
-            setCurrentHeartRate(latestHR ? latestHR: "No data");
+            setCurrentHeartRate(latestHR?.toFixed() ? latestHR: "No data");
         }
 
         const result = await db.getAllAsync(`select metadata, timestamp_start from metrics
@@ -123,7 +114,7 @@ export default function DetailsScreen() {
                             }}
                     />)}
                     <TouchableOpacity style={styles.plusContainer}
-                                        onPress={seeInitalization}>
+                                        onPress={addNewActicity}>
                         <Image source={require("../../assets/images/plusButton.png")}
                                 style={styles.plusLogo}/>
                     </TouchableOpacity>

@@ -28,8 +28,7 @@ export default function LoginScreen() {
                      weight = ?,
                      gender = ?,
                      activity = ?,
-                     laydown_time = ?
-                     WHERE id = 1;
+                     laydown_time = ?;
                      `, [res.name, res.age, res.height,  res.weight, res.gender, res.activity, res.laydowntime]);
         await db.runAsync(`UPDATE user
                      SET isNew = ?;

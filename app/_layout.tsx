@@ -11,6 +11,9 @@ export default function RootLayout() {
                         email TEXT PRIMARY KEY,
                         isNew BOOLEAN NOT NULL
                     );
+                    INSERT INTO user (email, isNew) 
+                    SELECT "placeholder", True
+                    WHERE NOT EXISTS (SELECT 1 FROM user);
 
                     CREATE TABLE IF NOT EXISTS user_data (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -22,6 +25,11 @@ export default function RootLayout() {
                         activity TEXT CHECK (activity IN ('LOW', 'MEDIUM', 'HIGH')),
                         laydown_time TIME
                     );
+
+                    INSERT INTO user_data (name, age, height, weight, gender, activity, laydown_time)
+                    SELECT null, null, null, null, null, null, null
+                    WHERE NOT EXISTS (SELECT 1 FROM user_data);
+
                     CREATE TABLE IF NOT EXISTS metrics (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         metric_type TEXT NOT NULL,

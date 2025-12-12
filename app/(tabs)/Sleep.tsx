@@ -90,7 +90,6 @@ export default function DetailsScreen() {
                 { !isEmpty && !isLoading && (<FlatList 
                         data={sleepData}
                         renderItem = {({item}) => {
-                            console.log(item)
                             const dateStart = new Date(item.timestamp_start)
                             const dateEnd = new Date(item.timestamp_end)
                             

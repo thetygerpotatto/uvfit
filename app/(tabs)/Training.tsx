@@ -5,6 +5,7 @@ import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useDayContex } from '@/components/DayContext';
 import { useSQLiteContext } from 'expo-sqlite';
+import useHealthConnect from "@/hooks/useHealthConnect"
 
 interface ActivityQueryResult {
     metadata: any
@@ -16,19 +17,45 @@ interface ActivityEntry {
   date: Date;
 }
 export default function DetailsScreen() {
+    const {
+        isAvailable,
+        isInitialized,
+        requestHealthPermissions,
+        getSteps,
+        getTodaySteps,
+        getHeartRate,
+        getLatestHeartRate,
+        getDistance,
+        getCalories,
+        getTodayHealthData,
+        openSettings,
+    } = useHealthConnect()
     const router = useRouter()
     const db = useSQLiteContext()
     const [activityData, setActivityData] = useState<ActivityEntry[]>([])
     const [isLoading, setIsLoading] = useState(true)
     const {currentDay}: any = useDayContex()
+    const [currentCalories, setCurrentCalories] = useState(0)
+    const [currentHeartRate, setCurrentHeartRate] = useState<number | string>(0)
 
     const addNewActicity = () => {
         router.push("/ActivityForm")
+    }
+
+    const seeInitalization = async () => {
+        const inicio = new Date(Date.now() - 1000*60*60*24)
+        const fin = new Date()
+        console.log("is av", isAvailable)
+        console.log("is Initialized", isInitialized)
+        console.log("CAL", await getCalories(inicio))
+        console.log("STEPS", await getSteps(inicio, fin))
     }
     
     useEffect(() => {
         getActivityData()
     }, [currentDay]);
+
+    //console.log("Pasos: ", getSteps(new Date(), new Date()))
 
     // useEffect(() => {
     //     const interval = setInterval(() => {
@@ -42,10 +69,29 @@ export default function DetailsScreen() {
     // }
 
     const getActivityData = async () => {
+        const today = new Date()
+        today.setHours(0,0,0,0)
         const startDate = new Date(currentDay)
         startDate.setHours(0,0,0,0)
         const endDate = new Date(currentDay)
         endDate.setHours(23,59,59,999)
+        
+        const cals: Number = await getCalories(startDate, endDate)
+        setCurrentCalories(Number(cals.toFixed()))
+
+        const heartrates = await getHeartRate(startDate, endDate)
+        const avgHR = (heartrates.length !== 0) 
+            ? heartrates.map((record) => record.bpm).reduce((sum, bpm) => {
+                return bpm + sum
+            }) / heartrates.length
+            : "No data"
+        if (startDate < today) {
+            setCurrentHeartRate(avgHR)
+        }
+        else {
+            const latestHR = await getLatestHeartRate().then((record) => record?.bpm)
+            setCurrentHeartRate(latestHR ? latestHR: "No data");
+        }
 
         const result = await db.getAllAsync(`select metadata, timestamp_start from metrics
                     where metric_type = 'training' 
@@ -68,13 +114,13 @@ export default function DetailsScreen() {
                 <View style={styles.widgetContainer}>
                     <View style={styles.iconContainer}>
                         <Text style={styles.itemText}>Average Rate</Text>
-                        <Image style={styles.icons} source={require("../../assets/images/heart_icon.png")}/>
-                        <Text style={styles.itemText}>3</Text>
+                        <Image style={styles.icons}  source={require("../../assets/images/heart_icon.png")}/>
+                        <Text style={styles.itemText}>{currentHeartRate}</Text>
                     </View>
                     <View style={styles.iconContainer}>
                         <Text style={styles.itemText}>Calories</Text>
                         <Image style={styles.icons} source={require("../../assets/images/fire_icon.png")}/>
-                        <Text style={styles.itemText}>3</Text>
+                        <Text style={styles.itemText}>{currentCalories}</Text>
                     </View>
                 </View>
                 <View style={styles.activityContainer}>
@@ -91,7 +137,7 @@ export default function DetailsScreen() {
                             }}
                     />)}
                     <TouchableOpacity style={styles.plusContainer}
-                                        onPress={addNewActicity}>
+                                        onPress={seeInitalization}>
                         <Image source={require("../../assets/images/plusButton.png")}
                                 style={styles.plusLogo}/>
                     </TouchableOpacity>

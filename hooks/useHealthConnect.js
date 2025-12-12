@@ -40,6 +40,7 @@ const useHealthConnect = () => {
                 { accessType: 'read', recordType: 'Distance' },
                 { accessType: 'read', recordType: 'ActiveCaloriesBurned' },
                 { accessType: 'read', recordType: 'TotalCaloriesBurned' },
+                { accessType: 'read', recordType: 'SleepSession' },
             ];
 
             const granted = await requestPermission(permissions);
@@ -49,6 +50,25 @@ const useHealthConnect = () => {
             return false;
         }
     };
+    
+    // Get sleep data for a date range
+    const getSleep = async (startDate, endDate= new Date()) => {
+        try {
+            const result = await readRecords('SleepSession', {
+                timeRangeFilter: {
+                    operator: 'between',
+                    startTime: startDate.toISOString(),
+                    endTime: endDate.toISOString(),
+                },
+            });
+
+
+            return result;
+        } catch (error) {
+            console.error('Error reading sleep:', error);
+            return 0;
+        }
+    }
 
     // Get steps for a date range
     const getSteps = async (startDate, endDate = new Date()) => {
@@ -200,6 +220,7 @@ const useHealthConnect = () => {
         getLatestHeartRate,
         getDistance,
         getCalories,
+        getSleep,
         getTodayHealthData,
         openSettings,
     };

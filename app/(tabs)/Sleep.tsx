@@ -5,6 +5,7 @@ import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useDayContex } from '@/components/DayContext';
 import { useSQLiteContext } from 'expo-sqlite';
+import useHealthConnect from '@/hooks/useHealthConnect';
 
 interface SleepRecord {
     timestamp_start: string
@@ -12,6 +13,12 @@ interface SleepRecord {
 }
 
 export default function DetailsScreen() {
+    const {
+        isAvailable,
+        isInitialized,
+        getSleep
+    } = useHealthConnect()
+
     const router = useRouter();
     const db = useSQLiteContext();
     const [isLoading, setIsLoading] = useState(true);
@@ -28,8 +35,8 @@ export default function DetailsScreen() {
         startDate.setHours(0,0,0,0)
         const endDate = new Date(currentDay)
         endDate.setHours(23,59,59,999)
-
-        const result = await db.getAllAsync(`
+        const hc_result = await getSleep(startDate, endDate).then(result => result.records)
+        const db_result = await db.getAllAsync(`
                                          SELECT timestamp_start, timestamp_end
                                          FROM metrics
                                          WHERE metric_type = "sleep" AND
@@ -43,15 +50,25 @@ export default function DetailsScreen() {
                                          startDate.toISOString(),
                                          endDate.toISOString()]
                                         );
-        console.log(result);
-        if (result.length === 0) {
+        if (db_result.length === 0 && hc_result.length == 0) {
             setIsEmpty(true)
         } else {
             setIsEmpty(false)
         }
-        setSleepData(result.map((r) => {
+        
+
+        const db_records = db_result.map((r) => {
             return r as SleepRecord
-        }))
+        })
+        const hc_records = hc_result.length
+            ? hc_result.map((record: any) => {
+                return {timestamp_start: record.startTime, timestamp_end: record.endTime} as SleepRecord
+            })
+            : []
+        const records = [...db_records, ...hc_records]
+
+        setSleepData(records)
+
         setIsLoading(false)
 
     }
@@ -73,6 +90,7 @@ export default function DetailsScreen() {
                 { !isEmpty && !isLoading && (<FlatList 
                         data={sleepData}
                         renderItem = {({item}) => {
+                            console.log(item)
                             const dateStart = new Date(item.timestamp_start)
                             const dateEnd = new Date(item.timestamp_end)
                             

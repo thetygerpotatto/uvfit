@@ -55,19 +55,6 @@ export default function DetailsScreen() {
         getActivityData()
     }, [currentDay]);
 
-    //console.log("Pasos: ", getSteps(new Date(), new Date()))
-
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         updateAvgHR();
-    //     }, 60000);
-    //     return () => clearInterval(interval);
-    // }, []);
-    //
-    // const updateAvgHR = async () => {
-    //
-    // }
-
     const getActivityData = async () => {
         const today = new Date()
         today.setHours(0,0,0,0)
@@ -101,7 +88,6 @@ export default function DetailsScreen() {
         const parsed = result.map((data: ActivityQueryResult) => {
             return {metadata: JSON.parse(data.metadata), date: new Date(data.timestamp_start)}
         });
-        console.log(parsed);
         setActivityData(parsed)
         setIsLoading(false);
     }

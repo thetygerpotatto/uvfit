@@ -3,15 +3,13 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, ScrollView } from '
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
-import { openHealthConnectSettings } from 'react-native-health-connect';
+import useHealthConnect from '@/hooks/useHealthConnect';
 
 export default function DetailsScreen() {
     const db = useSQLiteContext()
     const router = useRouter()
     const {removeItem} = useAsyncStorage('Token')
-    const openHC = async () => {
-        openHealthConnectSettings()
-    }
+    const {openSettings} = useHealthConnect()
     
     const options = [{id: "1", label: "Cerrar Sesion"},
                     {id: "2", label: "Ver datos Fisicos"},
@@ -26,7 +24,7 @@ export default function DetailsScreen() {
             case "2":
                 router.replace("/Stats")
             case "3":
-                openHC()
+                openSettings()
             break;
         }
     }

@@ -3,7 +3,7 @@ import { useSQLiteContext } from "expo-sqlite"
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native"
 import { PasionColor } from "@/scripts/PasionColors"
 import { SafeAreaView } from "react-native-safe-area-context"
-import { use, useState } from "react"
+import { useState } from "react"
 import DateTimePicker from "react-native-modal-datetime-picker"
 import TextFieldEntry from "@/components/TextFieldEntry"
 

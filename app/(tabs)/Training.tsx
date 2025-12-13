@@ -18,17 +18,9 @@ interface ActivityEntry {
 }
 export default function DetailsScreen() {
     const {
-        isAvailable,
-        isInitialized,
-        requestHealthPermissions,
-        getSteps,
-        getTodaySteps,
         getHeartRate,
         getLatestHeartRate,
-        getDistance,
         getCalories,
-        getTodayHealthData,
-        openSettings,
     } = useHealthConnect()
     const router = useRouter()
     const db = useSQLiteContext()

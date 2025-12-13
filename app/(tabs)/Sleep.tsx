@@ -14,8 +14,6 @@ interface SleepRecord {
 
 export default function DetailsScreen() {
     const {
-        isAvailable,
-        isInitialized,
         getSleep
     } = useHealthConnect()
 

@@ -1,5 +1,5 @@
 import { PasionColor } from '@/scripts/PasionColors';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
@@ -19,13 +19,15 @@ export default function DetailsScreen() {
         switch(id){
             case "1":
                 removeItem()
-                router.replace("/login")
                 db.execAsync("UPDATE user SET email=null, isNew = True")
+                router.replace("/login")
+                break;
             case "2":
                 router.replace("/Stats")
+                break;
             case "3":
                 openSettings()
-            break;
+                break;
         }
     }
     return (

@@ -17,9 +17,6 @@ export default function DetailsScreen() {
     const [data, setData] = useState<radarEntry[]>([])
     const {currentDay}: any = useDayContex()
     const {
-        isAvailable,
-        isInitialized,
-        requestHealthPermissions,
         getSteps,
         getHeartRate,
         getLatestHeartRate,
